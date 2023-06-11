@@ -26,7 +26,13 @@
                 <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/login/oauth/authorize?scope=user:email&client_id=1aeb06facd0a0cde2309">登录</a></li>
+                <li th:if="${session.user == null}">
+                    <a href="https://github.com/login/oauth/authorize?client_id=a9951ac7f088705f5d37&state=20230510cv">登录</a>
+                    <span th:if="${session.errmsg != null}" th:text="${session.errmsg}" ></span>
+                </li>
+                <li th:if="${session.user != null}">
+                    <a href="#" th:text="${session.user.name}"></a>
+                </li>
             </ul>
         </div>
     </div>
