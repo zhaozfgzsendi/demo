@@ -1,13 +1,38 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>Machine Time Display - Demo Application</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
     <link rel="stylesheet" href="css/bootstrap.min.css" />
     <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
     <script type="application/javascript" src="js/jquery-3.6.4.min.js"></script>
     <script type="application/javascript" src="js/bootstrap.min.js"></script>
+    
+    <style>
+        .time-display {
+            margin-top: 80px;
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+            border-radius: 10px;
+        }
+        .time-info {
+            margin: 10px 0;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .current-time {
+            font-size: 2.5em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        #live-time {
+            color: #FFD700;
+        }
+    </style>
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">
@@ -20,7 +45,7 @@
         <div class="collapse navbar-collapse col-sm-9 col-md-9 col-lg-9" style="height: 30px">
             <ul class="nav navbar-nav"  style="width: 100%;height: 100%">
                 <li class="active"  style="width: 100%;height: 100%">
-                    <a href="#" style="width: 100%;height: 100%" >Link</a>
+                    <a href="#" style="width: 100%;height: 100%" >Machine Time Display</a>
                 </li>
             </ul>
         </div>
@@ -42,5 +67,61 @@
 <!--        </div>-->
     </div>
 </nav>
+
+<div class="container">
+    <div class="time-display">
+        <h1>🕒 Machine Time Display</h1>
+        
+        <div class="time-info">
+            <h3>Current Server Time</h3>
+            <div class="current-time" th:text="${currentTime}">2024-01-01 12:00:00</div>
+        </div>
+        
+        <div class="time-info">
+            <h4>Live Time (Auto-updating)</h4>
+            <div class="current-time" id="live-time"></div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="time-info">
+                    <h4>Time Zone</h4>
+                    <p th:text="${timeZone}">UTC</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="time-info">
+                    <h4>Unix Timestamp</h4>
+                    <p th:text="${epochTime}">1609459200000</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="time-info">
+            <h4>Welcome</h4>
+            <p>Hello, <span th:text="${name}">World</span>!</p>
+        </div>
+    </div>
+</div>
+
+<script>
+function updateLiveTime() {
+    const now = new Date();
+    const options = {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+    };
+    document.getElementById('live-time').textContent = now.toLocaleString('en-CA', options).replace(/,/g, '');
+}
+
+// Update time immediately and then every second
+updateLiveTime();
+setInterval(updateLiveTime, 1000);
+</script>
 </body>
 </html>
