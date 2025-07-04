@@ -15,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Controller
@@ -30,6 +33,12 @@ public class HomeController {
     @GetMapping("/")
     public String home(@RequestParam(name = "name", required = false, defaultValue = "world") String name, Model model, HttpServletRequest request) {
         System.out.println("home()");
+
+        // Get current machine time
+        LocalDateTime currentTime = LocalDateTime.now();
+        String formattedTime = currentTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        String timeZone = ZoneId.systemDefault().toString();
+        long epochTime = System.currentTimeMillis();
 
         Cookie[] cookies = request.getCookies();
         cookies = cookies == null ? new Cookie[]{} : cookies;
@@ -47,6 +56,9 @@ public class HomeController {
         }
 
         model.addAttribute("name", name);
+        model.addAttribute("currentTime", formattedTime);
+        model.addAttribute("timeZone", timeZone);
+        model.addAttribute("epochTime", epochTime);
         return "index";
     }
 
